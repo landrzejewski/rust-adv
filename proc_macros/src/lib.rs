@@ -5,10 +5,35 @@ mod public;
 mod resource;
 
 use proc_macro::TokenStream;
+use quote::quote;
+use syn::{parse2, DeriveInput};
 
 #[proc_macro_derive(Greet)]
 pub fn derive_greet(input: TokenStream) -> TokenStream {
-    greet::impl_(input.into()).into()
+    let ast: DeriveInput = parse2(input.into()).unwrap();
+    let name = &ast.ident;
+
+    quote! {
+        impl #name {
+            pub fn greet(&self) -> String {
+                format!("Hello from {}!", stringify!(#name))
+            }
+        }
+    }.into()
+}
+
+#[proc_macro_derive(Info)]
+pub fn derive_info(input: TokenStream) -> TokenStream {
+    let ast: DeriveInput = parse2(input.into()).unwrap();
+    let name = &ast.ident;
+
+    quote! {
+        impl Info for #name {
+           fn info() -> String {
+                format!("Hello {}!", stringify!(#name))
+            }
+        }
+    }.into()
 }
 
 #[proc_macro_attribute]

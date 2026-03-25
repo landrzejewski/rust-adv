@@ -16,20 +16,17 @@ use syn::{
 
 // ── Main entry point ──────────────────────────────────────────────────────────
 //
-// This is a derive macro implementation:
-//   #[derive(Getters)]
-//   struct Foo { bar: String, baz: i32 }
+// This is a function-like proc macro:
+//   private!(struct Foo { bar: String, baz: i32 })
 //
-// Generates for each field a getter method:
+// Generates the struct with private fields plus a getter for each field:
 //   impl Foo {
 //       pub fn get_bar(&self) -> &String { &self.bar }
 //       pub fn get_baz(&self) -> &i32    { &self.baz  }
 //   }
 //
-// Derive macros are *additive* — they append new items, they don't replace
-// the original struct. Unlike attribute macros, the compiler automatically
-// keeps the original struct. However, here we're working with proc_macro2
-// (not proc_macro), so we have to re-emit the original struct manually —
+// Function-like proc macros replace their input entirely (like attribute
+// macros). To keep the original struct, we must re-emit it ourselves —
 // hence the clone before parsing.
 pub fn impl_(input: TokenStream) -> TokenStream {
     // Clone BEFORE parse2() consumes `input`.
@@ -112,14 +109,15 @@ pub fn impl_(input: TokenStream) -> TokenStream {
     //
     // 1. #item_clone
     //    The original struct definition, re-emitted verbatim.
-    //    Required because we're using proc_macro2 (library mode) rather
-    //    than a real #[proc_macro_derive] — the compiler won't add the
-    //    struct back for us here.
+    //    Required because this is a function-like proc macro (#[proc_macro]),
+    //    which replaces its input. Unlike #[proc_macro_derive], the compiler
+    //    does not automatically keep the original item.
     //
     // 2. impl #name { #(#methods)* }
     //    The generated impl block with all getters.
     //    #(#methods)* expands each TokenStream in the Vec one after another
     //    with no separator (methods don't need commas between them).
+
     quote! {
         #item_clone
 

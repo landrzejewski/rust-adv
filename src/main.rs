@@ -3,5 +3,4 @@ mod mod_002_macros;
 mod exercises;
 
 fn main() {
-
 }

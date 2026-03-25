@@ -49,7 +49,7 @@
 
 4. Test Suite Runner Macro
 
-   Write a declarative macro that lets you define named test cases inline
+   Write a macro that lets you define named test cases inline
    and generates a runner that executes each test, catches panics via
    `catch_unwind`, and reports pass/fail results — no `#[test]` harness
    needed. Then write a second macro that combines multiple suites into a
@@ -63,7 +63,7 @@
 
 5. Bitflags Macro
 
-   Build a declarative macro that generates a complete bitflag type from a
+   Build a macro that generates a complete bitflag type from a
    list of named constants and a backing integer type. The generated type
    should support combining flags with bitwise operators, querying
    individual flags, and pretty-printing the set of active flags. Prove
@@ -79,7 +79,7 @@
 
 6. Builder Macro
 
-   Write a declarative macro that takes a struct definition and
+   **Write a proc macro that takes a struct definition and
    automatically generates a builder type with chainable setter methods and
    a `build()` method that returns an error if any field was not set.
    This eliminates the boilerplate of hand-writing the builder pattern.
@@ -88,7 +88,7 @@
       - Builder struct with all fields as `Option<T>`
       - Chainable setter methods (take value, return `&mut Self`)
       - `build() -> Result<Person, String>` that checks all fields are set
-    * Demonstrate builder pattern usage and missing-field errors
+    * Demonstrate builder pattern usage and missing-field errors**
 
 ## Threads/Concurrency + Async (A3, A4)
 

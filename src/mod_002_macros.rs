@@ -9,7 +9,7 @@
 
 use std::collections::HashMap;
 
-use proc_macros::{Builder, Greet, private, public, resource};
+use proc_macros::{Builder, Greet, private, public, resource, Info};
 
 // ===========================================================================
 // Section 0: Macro Theory
@@ -782,16 +782,22 @@ fn proc_macros_derive() {
     println!("    proc_macros/src/ (implementation using proc_macro2 for testability)");
     println!();
 
+    trait Info {
+        fn info() -> String;
+    }
+
     // --- Step 32: #[derive(Greet)] ---
     // Source: proc_macros/src/greet.rs
     // Flow: parse DeriveInput → extract ident → quote! { impl #name { fn greet() } }
-    #[derive(Greet)]
+    #[derive(Greet, Info, Debug)]
     struct Robot;
 
     #[derive(Greet)]
     struct Sensor;
 
-    println!("  {}", Robot.greet());
+
+
+    println!("  {}", Robot::info());
     println!("  {}", Sensor.greet());
 
     // The greet() method is generated — not hand-written.
@@ -953,11 +959,11 @@ fn proc_macros_attribute_and_fn() {
     //       else if input.peek(kw::count) { parse count + LitInt }
     //   }
     // Source: proc_macros/src/resource.rs
-    resource! {
+    resource!(
         resource ConnectionPool
         name "postgres_pool"
         count 10
-    }
+    );
 
     let pool = ConnectionPool::new();
     println!("  resource! DSL: {}", pool.description());
