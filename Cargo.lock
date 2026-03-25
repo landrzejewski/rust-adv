@@ -32,6 +32,9 @@ dependencies = [
 [[package]]
 name = "rust-adv"
 version = "0.1.0"
+dependencies = [
+ "proc_macros",
+]
 
 [[package]]
 name = "syn"
