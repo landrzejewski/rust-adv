@@ -6,3 +6,4 @@ pub mod bitflags_macro;
 pub mod test_suite_macro;
 pub mod pipeline;
 pub mod word_counter;
+pub mod countdown_future;
