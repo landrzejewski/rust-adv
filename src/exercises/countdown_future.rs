@@ -117,13 +117,7 @@ fn block_on<F: Future>(future: F) -> F::Output {
     }
 }
 
-// ============================
-// Demonstration
-// ============================
-
 pub fn run() {
-    println!("=== Exercise 17: Custom Countdown Future ===\n");
-
     // --- Single countdown ---
     println!("--- Single countdown ---");
     let result = block_on(CountdownFuture::new("Rocket", 5));
